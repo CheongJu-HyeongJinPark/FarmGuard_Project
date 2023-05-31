@@ -1,0 +1,159 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.4/dist/flowbite.min.css" />
+  <style>
+    table {
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    td {
+      max-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: fit-content;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col p-8 gap-4 dark:bg-gray-900 antialiased">
+  <div class="flex flex-row gap-4">
+    <img src="{{ url_for("images", path=name) }}">
+    <div class="flex flex-col w-full content-center gap-8 text-center">
+      <!-- [작물 부위]부분이며 [병해]에 걸렸습니다. 병의 진행단계는 [질병 피해정도]입니다. 해당 작물은 현재 [생육단계] 입니다.  -->
+      <h1 class="text-xl font-semibold text-white">{{ title }}</h1>
+      <!-- 정상인 경우 네이버 쇼핑 버튼이 뜨지 않도록 합니다 -->
+      {% if "정상" not in shop_query %}
+      <a class="bg-green-400 text-white p-4 rounded-lg font-black" target="_blank"
+        href="https://search.shopping.naver.com/search/all?query={{ shop_query }}&cat_id=&frm=NVSHATC">네이버 쇼핑 바로가기</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- 농약안전정보로부터 불러온 데이터를 테이블 형태로 표시합니다 -->
+  <div class="flex flex-col">
+    <span class="font-semibold text-white">총 {{ pesticides|length }}개의 검색결과</span>
+    <div class="shadow-md rounded-lg overflow-x-auto">
+      <table class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              용도
+            </th>
+            <th scope="col" class="px-6 py-3">
+              품목
+            </th>
+            <th scope="col" class="px-6 py-3">
+              상표명
+            </th>
+            <th scope="col" class="px-6 py-3">
+              회사명
+            </th>
+            <th scope="col" class="px-6 py-3">
+              주성분 함량
+            </th>
+            <th scope="col" class="px-6 py-3">
+              제조수입구분
+            </th>
+            <th scope="col" class="px-6 py-3">
+              작용기작
+            </th>
+            <th scope="col" class="px-6 py-3">
+              회사등록일
+            </th>
+            <th scope="col" class="px-6 py-3">
+              농약품목코드 상세정보 조회키
+            </th>
+            <th scope="col" class="px-6 py-3">
+              병해충사용방법 상세정보 조회키
+            </th>
+            <th scope="col" class="px-6 py-3">
+              작물코드
+            </th>
+            <th scope="col" class="px-6 py-3">
+              작물분류코드
+            </th>
+            <th scope="col" class="px-6 py-3">
+              작물분류명
+            </th>
+            <th scope="col" class="px-6 py-3">
+              사용방법
+            </th>
+            <th scope="col" class="px-6 py-3">
+              희석배수(10a당 사용량)
+            </th>
+            <th scope="col" class="px-6 py-3">
+              안전사용기준(수확~일전)
+            </th>
+            <th scope="col" class="px-6 py-3">
+              안전사용기준(~회 이내)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pesticide in pesticides %}
+          <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+            <td class="px-6 py-4">
+              {{ pesticide["useName"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["pestiKorName"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["pestiBrandName"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["compName"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["engName"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["cmpaItmNm"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["indictSymbl"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["applyFirstRegDate"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{ pesticide["pestiCode"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["diseaseUseSeq"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["cropCd"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["cropLrclCd"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["cropLrclNm"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["pestiUse"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["dilutUnit"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["useSuittime"] }}
+            </td>
+            <td class="px-6 py-4">
+              {{pesticide["useNum"] }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>
